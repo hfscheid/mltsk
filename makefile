@@ -1,14 +1,14 @@
 tmin: time_logger
-	g++ tmin.cpp time_logger.o -o tmin
+	g++ time_logging/tmin.cpp time_logging/time_logger.o -o tmin
 
 tmout: time_logger
-	g++ tmout.cpp time_logger.o -o tmout
+	g++ time_logging/tmout.cpp time_logging/time_logger.o -o tmout
 
 time_logger:
-	g++ -c time_logger.cpp
+	g++ -c time_logging/time_logger.cpp -o time_logging/time_logger.o
 
 test: tmin tmout
-	rm time_logger.o
+	rm time_logging/time_logger.o
 
 cleanup:
 	rm ./tmin ./tmout
