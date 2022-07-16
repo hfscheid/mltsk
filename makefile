@@ -14,5 +14,6 @@ cleanup:
 	rm ./tmin ./tmout
 
 install: tmin tmout
+	mkdir ~/.mtsk
 	mv tmin $(HOME)/.local/bin/
 	mv tmout $(HOME)/.local/bin/

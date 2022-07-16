@@ -13,9 +13,9 @@ struct simple_time {
     int hours;
 };
 
-std::string get_filename() {
+std::string get_filename(std::string suffix) {
     std::string file_dir = getenv("HOME");
-    std::string file_name = file_dir + "/.time_in";
+    std::string file_name = file_dir + "/.mtsk/.time_in_" + suffix;
     return file_name;
 }
 
@@ -40,30 +40,19 @@ void display_diff(double diff_seconds) {
     print(break_seconds(diff_seconds));
 }
 
-void display_diff_continuous(double diff_seconds) {
-    struct simple_time s_t = break_seconds(diff_seconds);
-    while (true) {
-        s_t = break_seconds(double(s_t.seconds));
-        print(s_t);
-        ++s_t.seconds;
-        sleep(1);
-    }
-}
-
 int main(int argc, char** argv) {
-    std::string file_name = get_filename();
-    std::time_t then_raw_time = time_logger::get_time_from_file(file_name);
+    std::string time_log_file;
+    if (argc > 1) {
+        time_log_file = get_filename(std::string(argv[1]));
+    } else {
+        time_log_file = get_filename("time_in_default");
+    }
+
+    std::time_t then_raw_time = 
+        time_logger::get_time_from_file(time_log_file);
     std::time_t now_raw_time = time(NULL);
     double diff_seconds = difftime(now_raw_time, then_raw_time);
+    display_diff(diff_seconds);
 
-
-    if (argc > 1) {
-        if (std::string(argv[1]) == "-c") {
-            display_diff_continuous(diff_seconds);
-        }
-    }
-    else {
-        display_diff(diff_seconds);
-    }
     return 0;
 }

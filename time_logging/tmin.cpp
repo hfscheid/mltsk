@@ -4,12 +4,22 @@
 #include <ctime>
 #include "time_logger.hpp"
 
-int main() {
+std::string get_filename(std::string suffix) {
     std::string file_dir = getenv("HOME");
-    std::string file_name = file_dir + "/.time_in";
+    std::string file_name = file_dir + "/.mtsk/.time_in_" + suffix;
+    return file_name;
+}
+
+int main(int argc, char** argv) {
+    std::string time_log_file;
+    if (argc > 1) {
+        time_log_file = get_filename(std::string(argv[1]));
+    } else {
+        time_log_file = get_filename("time_in_default");
+    }
 
     std::time_t rawtime = time(NULL);
-    time_logger::write_time_to_file(rawtime, file_name);
+    time_logger::write_time_to_file(rawtime, time_log_file);
 
     std::cout << "Timed in at " << ctime(&rawtime) << std::endl;
     return 0;
