@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
+#include "time_logger.hpp"
 
 struct simple_time {
     int seconds;
@@ -16,21 +17,6 @@ std::string get_filename() {
     std::string file_dir = getenv("HOME");
     std::string file_name = file_dir + "/.time_in";
     return file_name;
-}
-
-
-std::time_t get_time_then(std::string file_name) {
-    std::string time_then;
-    std::ifstream time_file(file_name);
-    getline(time_file, time_then);
-    time_file.close();
-    std::stringstream time_then_stream(time_then);
-
-    struct std::tm tm;
-    time_then_stream >> std::get_time(&tm, "%a %b %d %H:%M:%S %Y\n");
-    tm.tm_isdst = 0;
-    std::time_t then_raw_time = mktime(&tm);
-    return then_raw_time;
 }
 
 void print(struct simple_time s_t) {
@@ -57,6 +43,7 @@ void display_diff(double diff_seconds) {
 void display_diff_continuous(double diff_seconds) {
     struct simple_time s_t = break_seconds(diff_seconds);
     while (true) {
+        s_t = break_seconds(double(s_t.seconds));
         print(s_t);
         ++s_t.seconds;
         sleep(1);
@@ -65,7 +52,7 @@ void display_diff_continuous(double diff_seconds) {
 
 int main(int argc, char** argv) {
     std::string file_name = get_filename();
-    std::time_t then_raw_time = get_time_then(file_name);
+    std::time_t then_raw_time = time_logger::get_time_from_file(file_name);
     std::time_t now_raw_time = time(NULL);
     double diff_seconds = difftime(now_raw_time, then_raw_time);
 
