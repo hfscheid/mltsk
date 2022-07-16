@@ -6,7 +6,7 @@
 
 std::string get_filename(std::string suffix) {
     std::string file_dir = getenv("HOME");
-    std::string file_name = file_dir + "/.mtsk/.time_in_" + suffix;
+    std::string file_name = file_dir + "/.mtsk/time_in_" + suffix;
     return file_name;
 }
 
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     if (argc > 1) {
         time_log_file = get_filename(std::string(argv[1]));
     } else {
-        time_log_file = get_filename("time_in_default");
+        time_log_file = get_filename("default");
     }
 
     std::time_t rawtime = time(NULL);

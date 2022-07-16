@@ -11,6 +11,7 @@ std::time_t time_logger::get_time_from_file(std::string file_name) {
     std::string time_as_string;
     std::ifstream time_file(file_name);
     getline(time_file, time_as_string);
+    if (time_as_string [0] != '>')
     time_file.close();
     std::stringstream time_as_stringstream(time_as_string);
 
@@ -23,8 +24,8 @@ std::time_t time_logger::get_time_from_file(std::string file_name) {
 
 
 void time_logger::write_time_to_file(std::time_t time, std::string file_name) {
-    std::ofstream time_file(file_name);
+    std::ofstream time_file(file_name, std::ios::app);
     std::string time_as_string = ctime(&time);
-    time_file << time_as_string;
+    time_file << "> " time_as_string;
     time_file.close();
 }
