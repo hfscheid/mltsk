@@ -5,27 +5,60 @@
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
+#include <list>
 #include "time_logger.hpp"
+#include "time_interval.hpp"
 
-std::time_t time_logger::get_time_from_file(std::string file_name) {
+void assert_last_interval_is_closed(std::list<time_interval>* l) {
+    if (*(l).back().is_open()) {
+        throw "last interval has not been closed.";
+    }
+}
+
+std::list<time_interval> 
+    time_logger::get_time_from_file(std::string file_name) {
+
     std::string time_as_string;
     std::ifstream time_file(file_name);
-    getline(time_file, time_as_string);
-    if (time_as_string [0] != '>')
-    time_file.close();
-    std::stringstream time_as_stringstream(time_as_string);
-
+    std::list<time_interval> t_i_list;
+    time_interval t_i;
     struct std::tm tm;
-    time_as_stringstream >> std::get_time(&tm, "%a %b %d %H:%M:%S %Y\n");
-    tm.tm_isdst = 0;
-    std::time_t raw_time = mktime(&tm);
-    return raw_time;
+    std::time_t raw_time;
+
+    while(getline(time_file, time_as_string)){
+        std::stringstream time_as_stringstream(
+            time_as_string.erase(0,1));
+        time_as_stringstream >> std::get_time(
+            &tm, "%a %b %d %H:%M:%S %Y\n");
+        tm.tm_isdst = 0;
+        raw_time = mktime(&tm);
+        if (time_as_string[0] == '>') {
+            assert_last_interval_is_closed(&t_i_list);
+            t_i = time_interval(raw_time);
+            t_i_list.push_back(t_i);
+        }
+        else if (time_as_string[0] == '<') {
+            t_i_list.back().close_interval(raw_time);
+        }
+        else {
+            throw file_name + "does not follow the .mltsk format";
+        }
+    }
+    time_file.close();
+    return t_i_list;
 }
 
 
-void time_logger::write_time_to_file(std::time_t time, std::string file_name) {
+void time_logger::write_time_to_file(std::time_t time,
+                                     std::string file_name,
+                                     std::string how) {
     std::ofstream time_file(file_name, std::ios::app);
     std::string time_as_string = ctime(&time);
-    time_file << "> " time_as_string;
+    if (how == "close") {
+        time_file << "<" time_as_string;
+    }
+    if (how == "open") {
+        time_file << ">" time_as_string;
+    }
     time_file.close();
 }

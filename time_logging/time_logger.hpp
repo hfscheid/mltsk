@@ -6,7 +6,9 @@
 class time_logger {
     public:
     static std::time_t get_time_from_file(std::string file_name);
-    static void write_time_to_file(std::time_t time, std::string file_name);
+    static void write_time_to_file(std::time_t time,
+                                   std::string file_name,
+                                   std::string how);
 };
 
 #endif
