@@ -49,9 +49,8 @@ std::list<time_interval>
 }
 
 
-void time_logger::write_time_to_file(std::time_t time,
-                                     std::string file_name,
-                                     std::string how) {
+void time_logger::write_time_to_file(
+    std::time_t time, std::string file_name, std::string how) {
     std::ofstream time_file(file_name, std::ios::app);
     std::string time_as_string = ctime(&time);
     if (how == "close") {
