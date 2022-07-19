@@ -1,14 +1,17 @@
-tmin: time_logger
-	g++ time_logging/tmin.cpp time_logging/time_logger.o -o tmin
+tmin: time_logger time_interval
+	g++ time_logging/tmin.cpp time_logging/time_logger.o time_logging/time_interval.o -o tmin
 
-tmout: time_logger
-	g++ time_logging/tmout.cpp time_logging/time_logger.o -o tmout
+tmout: time_logger time_interval
+	g++ time_logging/tmout.cpp time_logging/time_logger.o time_logging/time_interval.o -o tmout
 
-time_logger:
-	g++ -c time_logging/time_logger.cpp -o time_logging/time_logger.o
+time_logger: time_interval
+	g++ -c time_logging/time_logger.cpp time_logging/time_interval.o -o time_logging/time_logger.o
+
+time_interval:
+	g++ -c time_logging/time_interval.cpp -o time_logging/time_interval.o
 
 test: tmin tmout
-	rm time_logging/time_logger.o
+	rm time_logging/*.o
 
 cleanup:
 	rm ./tmin ./tmout

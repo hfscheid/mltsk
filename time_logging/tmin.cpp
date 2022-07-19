@@ -6,7 +6,7 @@
 
 std::string get_filename(std::string suffix) {
     std::string file_dir = getenv("HOME");
-    std::string file_name = file_dir + "/.mtsk/time_in_" + suffix;
+    std::string file_name = file_dir + "/.mltsk/time_in_" + suffix;
     return file_name;
 }
 
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     }
 
     std::time_t rawtime = time(NULL);
-    time_logger::write_time_to_file(rawtime, time_log_file);
+    time_logger::write_time_to_file(rawtime, time_log_file, "open");
 
     std::cout << "Timed in at " << ctime(&rawtime) << std::endl;
     return 0;

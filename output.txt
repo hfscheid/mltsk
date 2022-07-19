@@ -1,0 +1,11 @@
+g++ -c time_logging/time_logger.cpp -o time_logging/time_logger.o
+g++ -c time_logging/time_interval.cpp -o time_logging/time_interval.o
+g++ time_logging/tmin.cpp time_logging/time_logger.o -o tmin
+time_logging/time_logger.o: In function `assert_last_interval_is_closed(std::__cxx11::list<time_interval, std::allocator<time_interval> >*)':
+time_logger.cpp:(.text+0x1c): undefined reference to `time_interval::is_open()'
+time_logging/time_logger.o: In function `time_logger::get_time_from_file(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)':
+time_logger.cpp:(.text+0x1c6): undefined reference to `time_interval::time_interval(long)'
+time_logger.cpp:(.text+0x22f): undefined reference to `time_interval::close_interval(long)'
+collect2: error: ld returned 1 exit status
+makefile:2: recipe for target 'tmin' failed
+make: *** [tmin] Error 1
