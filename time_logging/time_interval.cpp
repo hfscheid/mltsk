@@ -3,6 +3,21 @@
 #include <unistd.h>
 #include "time_interval.hpp"
 
+simple_time simple_time::operator+(const simple_time& b) {
+    simple_time c;
+    c.seconds = this->seconds + b.seconds;
+    c.seconds += (this->minutes + b.minutes)*60;
+    c.seconds += (this->hours + b.hours)*3600;
+
+    c.minutes = c.seconds/60;
+    c.hours = c.minutes/60;
+
+    c.seconds = c.seconds%60;
+    c.minutes = c.minutes%60;
+    c.hours = c.minutes%60;
+    return c;
+}
+
 time_interval::time_interval(std::time_t begin) {
     this->open = true;
     this->begin = new std::time_t;

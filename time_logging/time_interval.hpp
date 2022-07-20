@@ -2,9 +2,10 @@
 #define TIME_INTERVAL
 
 struct simple_time {
-    int seconds;
-    int minutes;
-    int hours;
+    long int seconds = 0;
+    long int minutes = 0;
+    long int hours = 0;
+    simple_time operator+(const simple_time&);
 };
 
 class time_interval {

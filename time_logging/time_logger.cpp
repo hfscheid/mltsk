@@ -9,6 +9,11 @@
 #include "time_logger.hpp"
 #include "time_interval.hpp"
 
+void assert_last_interval_is_open(std::list<time_interval>* l) {
+    if ((l->size() > 0) && !(l->back().is_open())) {
+        throw "there are no open intervals.";
+    }
+}
 void assert_last_interval_is_closed(std::list<time_interval>* l) {
     if ((l->size() > 0) && (l->back().is_open())) {
         throw "last interval has not been closed.";
@@ -62,18 +67,18 @@ void time_logger::write_time_to_file(
     std::time_t time, std::string file_name, std::string how) {
 
     std::ofstream time_file(file_name, std::ios::app);
+    std::string time_as_string = ctime(&time);
 //  iterate over the file. If there are already open intervals,
 //  an error will be thrown
     std::list<time_interval> t_i_list = get_time_from_file(file_name);
     try {
-        assert_last_interval_is_closed(&t_i_list);
-
-        std::string time_as_string = ctime(&time);
-        if (how == "close") {
-            time_file << "<" << time_as_string;
-        }
-        if (how == "open") {
+        if (how == "open") { 
+            assert_last_interval_is_closed(&t_i_list);
             time_file << ">" << time_as_string;
+        }
+        if (how == "close") {
+            assert_last_interval_is_open(&t_i_list);
+            time_file << "<" << time_as_string;
         }
     }
     catch (const char* e) {
