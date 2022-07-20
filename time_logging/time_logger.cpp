@@ -10,7 +10,6 @@
 #include "time_interval.hpp"
 
 void assert_last_interval_is_closed(std::list<time_interval>* l) {
-    std::cout << "running assertion...." << std::endl;
     if ((l->size() > 0) && (l->back().is_open())) {
         throw "last interval has not been closed.";
     }
@@ -62,22 +61,25 @@ std::list<time_interval>
 void time_logger::write_time_to_file(
     std::time_t time, std::string file_name, std::string how) {
 
+    std::ofstream time_file(file_name, std::ios::app);
 //  iterate over the file. If there are already open intervals,
 //  an error will be thrown
+    std::list<time_interval> t_i_list = get_time_from_file(file_name);
     try {
-        std::list<time_interval> t_i_list = get_time_from_file(file_name);
+        assert_last_interval_is_closed(&t_i_list);
+
+        std::string time_as_string = ctime(&time);
+        if (how == "close") {
+            time_file << "<" << time_as_string;
+        }
+        if (how == "open") {
+            time_file << ">" << time_as_string;
+        }
     }
     catch (const char* e) {
-        std::cerr << "Cannot write to " << file_name << ": " << e << std::endl;
+        std::cerr << "Could not parse " << file_name << ": " << e << std::endl;
+        time_file.close();
         exit(0);
-    }
-    std::ofstream time_file(file_name, std::ios::app);
-    std::string time_as_string = ctime(&time);
-    if (how == "close") {
-        time_file << "<" << time_as_string;
-    }
-    if (how == "open") {
-        time_file << ">" << time_as_string;
     }
     time_file.close();
 }
