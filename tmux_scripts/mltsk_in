@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [[ -z "$1" ]]
+then
+    echo "please specify task name. Use: 'checkin [TASK NAME]'"
+    exit
+fi
+
+tmin $1
+export CURR_TASK=$1
+tmux new-session -d -x- -y-
+tmux split-window -v  'bash'
+tmux resize-pane -y 10
+tmux select-pane -U
+tmux -2 attach-session -d

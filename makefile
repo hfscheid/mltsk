@@ -29,4 +29,6 @@ install: tmin tmon tmout tmall
 	mv tmout $(HOME)/.local/bin/
 	mv tmall $(HOME)/.local/bin/
 	cp time_logging/tmoff.sh $(HOME)/.local/bin/tmoff
+	cp tmux_scripts/mltsk_in $(HOME)/.local/bin/
+	cp tmux_scripts/mltsk_out $(HOME)/.local/bin/
 	rm time_logging/*.o

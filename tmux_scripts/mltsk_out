@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ -z "$CURR_TASK" ]]
+then
+    echo "no ongoing tasks."
+    exit
+fi
+
+tmout $CURR_TASK
+export CURR_TASK=''
+tmux detach-client
