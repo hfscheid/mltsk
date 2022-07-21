@@ -29,3 +29,4 @@ install: tmin tmon tmout tmall
 	mv tmout $(HOME)/.local/bin/
 	mv tmall $(HOME)/.local/bin/
 	cp time_logging/tmoff.sh $(HOME)/.local/bin/tmoff
+	rm time_logging/*.o
