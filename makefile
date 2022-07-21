@@ -22,7 +22,10 @@ test: tmin tmon tmout tmall
 cleanup:
 	rm ./tmin ./tmon ./tmout ./tmall
 
-install: tmin tmon
-	mkdir ~/.mtsk
+install: tmin tmon tmout tmall
+	if [ ! -d "$(HOME)/.mltsk" ]; then mkdir $(HOME)/.mltsk ; fi
 	mv tmin $(HOME)/.local/bin/
 	mv tmon $(HOME)/.local/bin/
+	mv tmout $(HOME)/.local/bin/
+	mv tmall $(HOME)/.local/bin/
+	cp time_logging/tmoff.sh $(HOME)/.local/bin/tmoff

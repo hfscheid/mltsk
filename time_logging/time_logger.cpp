@@ -9,6 +9,12 @@
 #include "time_logger.hpp"
 #include "time_interval.hpp"
 
+void assert_list_not_empty(std::list<time_interval>* l) {
+    if (l->size() == 0) {
+        throw "There are no entries. Make sure this task has been timed-in with command 'tmin [TASK NAME]'.";
+    }
+}
+
 void assert_last_interval_is_open(std::list<time_interval>* l) {
     if ((l->size() > 0) && !(l->back().is_open())) {
         throw "there are no open intervals.";
@@ -21,7 +27,7 @@ void assert_last_interval_is_closed(std::list<time_interval>* l) {
 }
 
 std::list<time_interval> 
-    time_logger::get_time_from_file(std::string file_name) {
+    time_logger::build_list(std::string file_name) {
 
     std::string time_as_string;
     std::ifstream time_file(file_name);
@@ -70,13 +76,14 @@ void time_logger::write_time_to_file(
     std::string time_as_string = ctime(&time);
 //  iterate over the file. If there are already open intervals,
 //  an error will be thrown
-    std::list<time_interval> t_i_list = get_time_from_file(file_name);
     try {
+        std::list<time_interval> t_i_list = build_list(file_name);
         if (how == "open") { 
             assert_last_interval_is_closed(&t_i_list);
             time_file << ">" << time_as_string;
         }
         if (how == "close") {
+            assert_list_not_empty(&t_i_list);
             assert_last_interval_is_open(&t_i_list);
             time_file << "<" << time_as_string;
         }
@@ -87,4 +94,16 @@ void time_logger::write_time_to_file(
         exit(0);
     }
     time_file.close();
+}
+
+std::list<time_interval> time_logger::get_time_from_file(std::string file_name) {
+    try {
+        std::list<time_interval> t_i_list = build_list(file_name);
+        assert_list_not_empty(&t_i_list);
+        return t_i_list;
+    }
+    catch (const char* e) {
+        std::cerr << "Could not parse " << file_name << ": " << e << std::endl;
+        exit(0);
+    }
 }

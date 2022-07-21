@@ -44,18 +44,18 @@ void print_simple_time(struct simple_time s_t) {
 //}
 
 int main(int argc, char** argv) {
-    std::string time_log_file;
+    std::string file_name;
     if (argc > 1) {
-        time_log_file = get_filename(std::string(argv[1]));
+        file_name = get_filename(std::string(argv[1]));
     } else {
-        time_log_file = get_filename("default");
+        file_name = get_filename("default");
     }
 
 //    std::time_t then_raw_time = 
-//        time_logger::get_time_from_file(time_log_file);
+//        time_logger::get_time_from_file(file_name);
 //    std::time_t now_raw_time = time(NULL);
     std::list<time_interval> time_list = time_logger::
-            get_time_from_file(time_log_file);
+            get_time_from_file(file_name);
     time_interval last_interval = time_list.back();
     if (last_interval.is_open()) {
         print_simple_time(last_interval.get_interval());
