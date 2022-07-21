@@ -18,9 +18,12 @@ time_interval:
 
 test: tmin tmon tmout tmall
 	rm time_logging/*.o
+	cp time_logging/tmoff ./
+	cp tmux_scripts/mltsk_in ./
+	cp tmux_scripts/mltsk_out ./
 
 cleanup:
-	rm ./tmin ./tmon ./tmout ./tmall
+	rm ./tmin ./tmon ./tmout ./tmoff ./tmall ./mltsk_in ./mltsk_out
 
 install: tmin tmon tmout tmall
 	if [ ! -d "$(HOME)/.mltsk" ]; then mkdir $(HOME)/.mltsk ; fi
@@ -28,7 +31,7 @@ install: tmin tmon tmout tmall
 	mv tmon $(HOME)/.local/bin/
 	mv tmout $(HOME)/.local/bin/
 	mv tmall $(HOME)/.local/bin/
-	cp time_logging/tmoff.sh $(HOME)/.local/bin/tmoff
+	cp time_logging/tmoff $(HOME)/.local/bin/
 	cp tmux_scripts/mltsk_in $(HOME)/.local/bin/
 	cp tmux_scripts/mltsk_out $(HOME)/.local/bin/
 	rm time_logging/*.o
