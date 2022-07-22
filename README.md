@@ -46,7 +46,7 @@ $ tmout namedtask
 ```
 This command will log that the last `time_interval` is now closed. From this point on, `tmon`'s output will remain constant (until a new `tmin` is executed).
 
-> **Note**: attempting to `tmout` twice in a row for a specific task will result in an error, since it doesn't make sense to close an already closed `time_interval`. To resume time metering, a ne interval must be first open.
+> **Note**: attempting to `tmout` twice in a row for a specific task will result in an error, since it doesn't make sense to close an already closed `time_interval`. To resume time metering, a new interval must be first open.
 
 Once there are multiple `time_intervals` in a task, it may be worthy to check the total time sum. This is done via `tmall`:
 
