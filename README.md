@@ -26,9 +26,9 @@ $ tmin namedtask
 ```
 Runing these commands would create the time log "~/.mltsk/time\_in\_namedtask.mltsk". 
 
-> **Note**: attempting to `tmin` twice in a row for a specific task will result in an error, since the last `time\_interval` must be closed for a new one to be open.
+> **Note**: attempting to `tmin` twice in a row for a specific task will result in an error, since the last `time_interval` must be closed for a new one to be open.
 
-Not that there is at least one `time\_interval` related to this task, its length may be acquired by the `tmon` command:
+Not that there is at least one `time_interval` related to this task, its length may be acquired by the `tmon` command:
 
 ```
 # if no task_name is specified, tmon will reach for the "default" time log.
@@ -46,7 +46,7 @@ $ tmout namedtask
 ```
 This command will log that the last `time_interval` is now closed. From this point on, `tmon`'s output will remain constant (until a new `tmin` is executed).
 
-> **Note**: attempting to `tmout` twice in a row for a specific task will result in an error, since it doesn't make sense to close an already closed `time\_interval`. To resume time metering, a ne interval must be first open.
+> **Note**: attempting to `tmout` twice in a row for a specific task will result in an error, since it doesn't make sense to close an already closed `time_interval`. To resume time metering, a ne interval must be first open.
 
 Once there are multiple `time_intervals` in a task, it may be worthy to check the total time sum. This is done via `tmall`:
 
