@@ -57,13 +57,13 @@ int main(int argc, char** argv) {
     std::list<time_interval> time_list = time_logger::
             get_time_from_file(file_name);
     time_interval last_interval = time_list.back();
-    if (last_interval.is_open()) {
-        print_simple_time(last_interval.get_interval());
-    }
-    else {
-        std::cout << "There are no open intervals. "
-                  << "To start an interval, run command 'tmin'\n";
-    }
-
+    print_simple_time(last_interval.get_interval());
+//    if (last_interval.is_open()) {
+//    }
+//    else {
+//        std::cout << "There are no open intervals. "
+//                  << "To start an interval, run command 'tmin'\n";
+//    }
+//
     return 0;
 }
